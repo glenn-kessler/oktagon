@@ -7,7 +7,7 @@ const int stepsPerRevolution = 200;         // Motor steps per revolution (adjus
 const unsigned long  MinStepPulseW_us = 5;  // previously 1000µs, reduced due to suggestion
 // vars
 unsigned long  lastPressTime_ms   = 0;
-unsigned long  WaitTilFinish_ms   = -1;
+unsigned long  WaitTilFinish_ms   = 400;
 unsigned long  stepDelay          = 0;
 unsigned short randomRepCount     = 0;      // restart rotations this many times
 unsigned short rpm                = 0;      // Motor rotations per minute
