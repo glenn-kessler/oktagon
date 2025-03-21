@@ -25,55 +25,55 @@ void setup()
 
 void loop()
 {
-	// state is notActive
+    // state is notActive
     if (0 == randomRepCount)
     {
         // button press && hysteresis
-		if ((LOW == digitalRead(Arduino_Button))
+        if ((LOW == digitalRead(Arduino_Button))
         && ((millis() - lastPressTime_ms) >= WaitTilFinish_ms))
-		{
-			startMotor();
-			randomRepCount = random(0,8); 	// 0,1,2,3,4,5,6,7
-		}
+        {
+            startMotor();
+            randomRepCount = random(0,8);     // 0,1,2,3,4,5,6,7
+        }
     }
-	// Continue motor operation
-	else
+    // Continue motor operation
+    else
     {
-		stopMotor();
-		randomRepCount--;
+        stopMotor();
+        randomRepCount--;
 
-		if (0 < randomRepCount)
-		{
-			startMotor();
-		}
+        if (0 < randomRepCount)
+        {
+            startMotor();
+        }
     }
 }
 
 void startMotor()
 {
     digitalWrite(A4988_Direction, random(0,2)); // 0=left  1=right
-    digitalWrite(A4988_Enable, LOW); 			// Set pin enable to LOW (motor enabeled)
+    digitalWrite(A4988_Enable, LOW);             // Set pin enable to LOW (motor enabeled)
 
     rpm              = random(10, 80);      // 10...79
     stepDelay        = (100L * 1000000L) / (rpm * stepsPerRevolution);
 
-	// ramp up
-	for (unsigned long rampDelay = 2 * stepDelay; rampDelay >= stepDelay; rampDelay -=10)
-	{
-		makeStep(rampDelay);
-	}
+    // ramp up
+    for (unsigned long rampDelay = 2 * stepDelay; rampDelay >= stepDelay; rampDelay -=10)
+    {
+        makeStep(rampDelay);
+    }
 
     WaitTilFinish_ms = random(400, 1600);   // 400...1599
     lastPressTime_ms = millis();            // remember when button press occured
 }
 
-void stopMotor()	
+void stopMotor()    
 {
-	// ramp down
-	for (unsigned long rampDelay = stepDelay; rampDelay < (2 * stepDelay); rampDelay +=10)
-	{
-		makeStep(rampDelay);
-	}
+    // ramp down
+    for (unsigned long rampDelay = stepDelay; rampDelay < (2 * stepDelay); rampDelay +=10)
+    {
+        makeStep(rampDelay);
+    }
 
     digitalWrite(A4988_Enable, HIGH);      // Set pin enable initially to HIGH (motor disabeled)
     delay(4000);
